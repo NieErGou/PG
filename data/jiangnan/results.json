@@ -1,0 +1,190 @@
+{
+  "status": "published_snapshot",
+  "protocol": {
+    "source_dataset": "jiangnan",
+    "source_result_kind": "Previously reported fixed-test aggregate snapshot",
+    "history_frames": 5,
+    "horizon_frames": 1,
+    "output": "azimuth/elevation degrees",
+    "demo_input_kind": "deterministic synthetic prepared features; no original dataset records",
+    "split": {
+      "train": 55,
+      "val": 12,
+      "test": 12
+    },
+    "test_used_for_model_subset": true,
+    "blind_test": false,
+    "latency_scope": "Original Windows CPU frozen forward, not newly measured on clone"
+  },
+  "models": [
+    {
+      "model": "pg",
+      "test": {
+        "samples": 12,
+        "azimuth_mae_deg": 0.06908925374348958,
+        "elevation_mae_deg": 0.06677998105684917,
+        "joint_mae_deg": 0.10976167714474726,
+        "joint_rmse_deg": 0.12484895526456423,
+        "p95_joint_error_deg": 0.20976057056868472,
+        "joint_error_definition": "sqrt(wrapped_azimuth_error**2 + elevation_error**2); not spherical geodesic",
+        "configured_bw10_hit": 0.9166666666666666,
+        "configured_bw25_hit": 1.0,
+        "configured_bw50_hit": 1.0
+      },
+      "validation": {
+        "samples": 12,
+        "azimuth_mae_deg": 0.09808603922526042,
+        "elevation_mae_deg": 0.08819234371185303,
+        "joint_mae_deg": 0.14168860343344203,
+        "joint_rmse_deg": 0.15802737172875472,
+        "p95_joint_error_deg": 0.243378421686775,
+        "joint_error_definition": "sqrt(wrapped_azimuth_error**2 + elevation_error**2); not spherical geodesic",
+        "configured_bw10_hit": 0.75,
+        "configured_bw25_hit": 1.0,
+        "configured_bw50_hit": 1.0
+      },
+      "parameters": 4198,
+      "latency": {
+        "mean_ms": 0.40364000000000005,
+        "p95_ms": 0.5214749999999999,
+        "measurements": 60,
+        "scope": "Windows CPU frozen forward; RF model includes learned estimation and prediction, excludes raw IO/STFT/calibration; not Jetson"
+      },
+      "input_names": [
+        "history",
+        "physics",
+        "anchor",
+        "iq"
+      ],
+      "name": "PG-MinGRU"
+    },
+    {
+      "model": "alstm",
+      "test": {
+        "samples": 12,
+        "azimuth_mae_deg": 0.07697804768880208,
+        "elevation_mae_deg": 0.05775099992752075,
+        "joint_mae_deg": 0.11087298771976262,
+        "joint_rmse_deg": 0.12625180266926578,
+        "p95_joint_error_deg": 0.2042771836630112,
+        "joint_error_definition": "sqrt(wrapped_azimuth_error**2 + elevation_error**2); not spherical geodesic",
+        "configured_bw10_hit": 0.9166666666666666,
+        "configured_bw25_hit": 1.0,
+        "configured_bw50_hit": 1.0
+      },
+      "validation": {
+        "samples": 12,
+        "azimuth_mae_deg": 0.09145609537760417,
+        "elevation_mae_deg": 0.07599105437596639,
+        "joint_mae_deg": 0.13115016379253996,
+        "joint_rmse_deg": 0.15617467169879887,
+        "p95_joint_error_deg": 0.27366479551723677,
+        "joint_error_definition": "sqrt(wrapped_azimuth_error**2 + elevation_error**2); not spherical geodesic",
+        "configured_bw10_hit": 0.6666666666666666,
+        "configured_bw25_hit": 1.0,
+        "configured_bw50_hit": 1.0
+      },
+      "parameters": 36902,
+      "latency": {
+        "mean_ms": 0.22369,
+        "p95_ms": 0.3707249999999997,
+        "measurements": 60,
+        "scope": "Windows CPU frozen forward; RF model includes learned estimation and prediction, excludes raw IO/STFT/calibration; not Jetson"
+      },
+      "input_names": [
+        "history",
+        "physics",
+        "anchor",
+        "iq"
+      ],
+      "name": "A-LSTM (2D adaptation)"
+    },
+    {
+      "model": "lstm_rnn",
+      "test": {
+        "samples": 12,
+        "azimuth_mae_deg": 0.07285563151041667,
+        "elevation_mae_deg": 0.05962863564491272,
+        "joint_mae_deg": 0.10817836724669866,
+        "joint_rmse_deg": 0.1233105314678935,
+        "p95_joint_error_deg": 0.21227103223286312,
+        "joint_error_definition": "sqrt(wrapped_azimuth_error**2 + elevation_error**2); not spherical geodesic",
+        "configured_bw10_hit": 0.9166666666666666,
+        "configured_bw25_hit": 1.0,
+        "configured_bw50_hit": 1.0
+      },
+      "validation": {
+        "samples": 12,
+        "azimuth_mae_deg": 0.09212493896484375,
+        "elevation_mae_deg": 0.07698609431584676,
+        "joint_mae_deg": 0.129553742679729,
+        "joint_rmse_deg": 0.15473603986887377,
+        "p95_joint_error_deg": 0.2718179758167296,
+        "joint_error_definition": "sqrt(wrapped_azimuth_error**2 + elevation_error**2); not spherical geodesic",
+        "configured_bw10_hit": 0.6666666666666666,
+        "configured_bw25_hit": 1.0,
+        "configured_bw50_hit": 1.0
+      },
+      "parameters": 71802,
+      "latency": {
+        "mean_ms": 0.21529000000000004,
+        "p95_ms": 0.27926499999999993,
+        "measurements": 60,
+        "scope": "Windows CPU frozen forward; RF model includes learned estimation and prediction, excludes raw IO/STFT/calibration; not Jetson"
+      },
+      "input_names": [
+        "history",
+        "physics",
+        "anchor",
+        "iq"
+      ],
+      "name": "LSTM-RNN (2D adaptation)"
+    },
+    {
+      "model": "lrnet",
+      "test": {
+        "samples": 12,
+        "azimuth_mae_deg": 0.06900787353515625,
+        "elevation_mae_deg": 0.06071557601292928,
+        "joint_mae_deg": 0.09886432711239375,
+        "joint_rmse_deg": 0.11055341532446217,
+        "p95_joint_error_deg": 0.17377886564905076,
+        "joint_error_definition": "sqrt(wrapped_azimuth_error**2 + elevation_error**2); not spherical geodesic",
+        "configured_bw10_hit": 0.8333333333333334,
+        "configured_bw25_hit": 1.0,
+        "configured_bw50_hit": 1.0
+      },
+      "validation": {
+        "samples": 12,
+        "azimuth_mae_deg": 0.09549204508463542,
+        "elevation_mae_deg": 0.07673869530359904,
+        "joint_mae_deg": 0.13375092257837778,
+        "joint_rmse_deg": 0.1537234646223657,
+        "p95_joint_error_deg": 0.244195780177051,
+        "joint_error_definition": "sqrt(wrapped_azimuth_error**2 + elevation_error**2); not spherical geodesic",
+        "configured_bw10_hit": 0.6666666666666666,
+        "configured_bw25_hit": 1.0,
+        "configured_bw50_hit": 1.0
+      },
+      "parameters": 72103,
+      "latency": {
+        "mean_ms": 0.28494499999999995,
+        "p95_ms": 0.35517000000000004,
+        "measurements": 60,
+        "scope": "Windows CPU frozen forward; RF model includes learned estimation and prediction, excludes raw IO/STFT/calibration; not Jetson"
+      },
+      "input_names": [
+        "history",
+        "physics",
+        "anchor",
+        "iq"
+      ],
+      "name": "LRNet (3D adaptation)"
+    }
+  ],
+  "limitations": [
+    "Aggregate metrics are from the original experiments, not from the bundled synthetic samples.",
+    "Bundled model outputs on synthetic samples demonstrate API functionality only.",
+    "The fixed test sets were reported before and are not new blind tests."
+  ]
+}

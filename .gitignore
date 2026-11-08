@@ -1,0 +1,14 @@
+__pycache__/
+*.py[cod]
+.venv/
+.pytest_cache/
+.runtime/
+*.log
+*.tmp
+*.zip
+*.pt
+*.pth
+private/
+raw/
+cache/
+results/

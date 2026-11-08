@@ -1,0 +1,72 @@
+{
+  "status": "published_snapshot",
+  "protocol": {
+    "source_dataset": "DeepSense 6G Scenario 23",
+    "source_result_kind": "Previously reported fixed-test aggregate snapshot",
+    "history_frames": 8,
+    "horizon_frames": 1,
+    "output": "64 beam classes",
+    "demo_input_kind": "deterministic synthetic prepared features; no original dataset records",
+    "split": "per-flight chronological 70/15/15",
+    "test_used_for_model_subset": false,
+    "blind_test": false,
+    "latency_scope": "Original Windows CPU frozen forward, not newly measured on clone"
+  },
+  "models": [
+    {
+      "model": "high_precision_multimodal",
+      "test": {
+        "top1": 0.7511792452830188,
+        "top3": 0.9716981132075472,
+        "top5": 0.9840801886792453
+      },
+      "parameters": 450271,
+      "name": "High-precision multimodal"
+    },
+    {
+      "model": "system_multimodal",
+      "test": {
+        "top1": 0.7582547169811321,
+        "top3": 0.964622641509434,
+        "top5": 0.9811320754716981
+      },
+      "parameters": 106368,
+      "name": "System multimodal"
+    },
+    {
+      "model": "freshness_student",
+      "test": {
+        "top1": 0.6556603773584906,
+        "top3": 0.9363207547169812,
+        "top5": 0.972877358490566
+      },
+      "parameters": 32096,
+      "name": "Freshness student"
+    },
+    {
+      "model": "position_geometry_mlp",
+      "test": {
+        "top1": 0.4074292452830189,
+        "top3": 0.7735849056603774,
+        "top5": 0.8714622641509434
+      },
+      "parameters": 151126,
+      "name": "Position / geometry MLP"
+    },
+    {
+      "model": "pg",
+      "test": {
+        "top1": 0.785377358490566,
+        "top3": 0.9805424528301887,
+        "top5": 0.9917452830188679
+      },
+      "parameters": 154894,
+      "name": "PG-MinGRU"
+    }
+  ],
+  "limitations": [
+    "Aggregate metrics are from the original experiments, not from the bundled synthetic samples.",
+    "Bundled model outputs on synthetic samples demonstrate API functionality only.",
+    "The fixed test sets were reported before and are not new blind tests."
+  ]
+}

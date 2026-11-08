@@ -1,0 +1,8 @@
+<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>PG-MinGRU · 当前实验</title><link rel="stylesheet" href="dashboard.css"></head><body>
+<header><strong>PG-MinGRU</strong><span>已报告结果快照与冻结模型演示</span></header><main>
+<nav><button data-task="BEAM">BEAM · 波束预测</button><button data-task="DOA">DOA · 角度预测</button><select id="dataset" aria-label="数据集"></select><button id="refresh">刷新结果</button><a class="runtime-link" href="runtime.html">模型运行视图</a></nav><p id="error" role="alert" hidden></p><p id="task" class="muted"></p><h1 id="title">读取当前结果…</h1><p id="description"></p>
+<section><h2 id="comparison-title">PG 与 baseline 对比</h2><p id="selection-note" class="selection-note" hidden></p><select id="group" aria-label="评估子集"></select><div class="scroll"><table id="comparison"></table></div><p id="measurement" class="muted"></p></section>
+<section><h2>结果图</h2><div id="figures"></div></section>
+<section><h2>当前模型推理</h2><p>内置输入为合成的 prepared 特征，仅用于演示接口，不属于原始数据集，也不能计算准确率。可粘贴相同格式的输入。BEAM 输出波束候选；DOA 输出方位角和俯仰角。</p><nav><select id="model" aria-label="模型"></select><button id="sample">载入合成样例</button><button id="predict">运行冻结模型</button></nav><textarea id="input" aria-label="推理 JSON" spellcheck="false"></textarea><pre id="prediction">等待输入</pre></section>
+<section><h2>结果与协议</h2><p id="directory"></p><div id="downloads"></div><details><summary>数据协议与限制</summary><pre id="protocol"></pre></details></section>
+</main><footer>BEAM 与 DOA 分开评价 · 展示已报告结果快照 · 输入样例为合成数据</footer><script src="dashboard.js"></script></body></html>

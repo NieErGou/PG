@@ -1,0 +1,258 @@
+{
+  "status": "published_snapshot",
+  "protocol": {
+    "source_dataset": "MultimodalNF",
+    "source_result_kind": "Previously reported fixed-test aggregate snapshot",
+    "history_frames": 8,
+    "horizon_frames": 1,
+    "output": "64 beam classes",
+    "demo_input_kind": "deterministic synthetic prepared features; no original dataset records",
+    "split": "project-defined disjoint city holdout; official assignment unavailable in archive",
+    "test_used_for_model_subset": false,
+    "blind_test": false,
+    "latency_scope": "Original Windows CPU frozen forward, not newly measured on clone"
+  },
+  "models": [
+    {
+      "model": "high_precision_multimodal",
+      "test": {
+        "top1": 0.8753065774804906,
+        "top3": 0.9739130434782609,
+        "top5": 0.9822742474916388
+      },
+      "groups": {
+        "ALL": {
+          "samples": 17940,
+          "top1": 0.8753065774804906,
+          "top3": 0.9739130434782609,
+          "top5": 0.9822742474916388
+        },
+        "LoS": {
+          "samples": 17089,
+          "top1": 0.8898121598689215,
+          "top3": 0.9862484639241618,
+          "top5": 0.9932120077242671
+        },
+        "NLoS": {
+          "samples": 851,
+          "top1": 0.5840188014101058,
+          "top3": 0.7262044653349001,
+          "top5": 0.7626321974148061
+        },
+        "BLOCKED_TRAJECTORY": {
+          "samples": 1548,
+          "top1": 0.6937984496124031,
+          "top3": 0.8301033591731266,
+          "top5": 0.8604651162790697
+        }
+      },
+      "validation": {
+        "top1": 0.8931233062330624,
+        "top3": 0.9865627822944896,
+        "top5": 0.9917570009033424
+      },
+      "parameters": 450271,
+      "latency": {
+        "mean_ms": 0.2953346666666667,
+        "p50_ms": 0.2784,
+        "p95_ms": 0.33511500000000005,
+        "samples": 300
+      },
+      "name": "High-precision multimodal"
+    },
+    {
+      "model": "system_multimodal",
+      "test": {
+        "top1": 0.8822742474916387,
+        "top3": 0.9751950947603122,
+        "top5": 0.9842251950947604
+      },
+      "groups": {
+        "ALL": {
+          "samples": 17940,
+          "top1": 0.8822742474916387,
+          "top3": 0.9751950947603122,
+          "top5": 0.9842251950947604
+        },
+        "LoS": {
+          "samples": 17089,
+          "top1": 0.8957223945227925,
+          "top3": 0.9871262215460238,
+          "top5": 0.9946749370940371
+        },
+        "NLoS": {
+          "samples": 851,
+          "top1": 0.6122209165687427,
+          "top3": 0.7356051703877791,
+          "top5": 0.7743830787309048
+        },
+        "BLOCKED_TRAJECTORY": {
+          "samples": 1548,
+          "top1": 0.7170542635658915,
+          "top3": 0.838501291989664,
+          "top5": 0.8656330749354005
+        }
+      },
+      "validation": {
+        "top1": 0.8990514905149052,
+        "top3": 0.986619241192412,
+        "top5": 0.9925474254742548
+      },
+      "parameters": 106368,
+      "latency": {
+        "mean_ms": 0.2619913333333333,
+        "p50_ms": 0.2314,
+        "p95_ms": 0.4251950000000001,
+        "samples": 300
+      },
+      "name": "System multimodal"
+    },
+    {
+      "model": "freshness_student",
+      "test": {
+        "top1": 0.7849498327759198,
+        "top3": 0.9188963210702341,
+        "top5": 0.9498327759197325
+      },
+      "groups": {
+        "ALL": {
+          "samples": 17940,
+          "top1": 0.7849498327759198,
+          "top3": 0.9188963210702341,
+          "top5": 0.9498327759197325
+        },
+        "LoS": {
+          "samples": 17089,
+          "top1": 0.8195330329451694,
+          "top3": 0.9506115044765638,
+          "top5": 0.9743109602668383
+        },
+        "NLoS": {
+          "samples": 851,
+          "top1": 0.09048178613396005,
+          "top3": 0.282021151586369,
+          "top5": 0.4582843713278496
+        },
+        "BLOCKED_TRAJECTORY": {
+          "samples": 1548,
+          "top1": 0.4315245478036176,
+          "top3": 0.5910852713178295,
+          "top5": 0.6905684754521964
+        }
+      },
+      "validation": {
+        "top1": 0.8264453477868112,
+        "top3": 0.9449525745257452,
+        "top5": 0.9773599819331527
+      },
+      "parameters": 32096,
+      "latency": {
+        "mean_ms": 0.19121233333333332,
+        "p50_ms": 0.18775,
+        "p95_ms": 0.225915,
+        "samples": 300
+      },
+      "name": "Freshness student"
+    },
+    {
+      "model": "position_geometry_mlp",
+      "test": {
+        "top1": 0.6178372352285396,
+        "top3": 0.8722408026755852,
+        "top5": 0.9243032329988852
+      },
+      "groups": {
+        "ALL": {
+          "samples": 17940,
+          "top1": 0.6178372352285396,
+          "top3": 0.8722408026755852,
+          "top5": 0.9243032329988852
+        },
+        "LoS": {
+          "samples": 17089,
+          "top1": 0.6438644742231845,
+          "top3": 0.902042249400199,
+          "top5": 0.9514892620984259
+        },
+        "NLoS": {
+          "samples": 851,
+          "top1": 0.09518213866039953,
+          "top3": 0.27379553466509987,
+          "top5": 0.3783783783783784
+        },
+        "BLOCKED_TRAJECTORY": {
+          "samples": 1548,
+          "top1": 0.30749354005167956,
+          "top3": 0.5645994832041343,
+          "top5": 0.6375968992248062
+        }
+      },
+      "validation": {
+        "top1": 0.6519308943089431,
+        "top3": 0.9004065040650406,
+        "top5": 0.951050135501355
+      },
+      "parameters": 151126,
+      "latency": {
+        "mean_ms": 0.03767633333333334,
+        "p50_ms": 0.03705,
+        "p95_ms": 0.041,
+        "samples": 300
+      },
+      "name": "Position / geometry MLP"
+    },
+    {
+      "model": "pg",
+      "test": {
+        "top1": 0.8923076923076924,
+        "top3": 0.9817725752508362,
+        "top5": 0.9893534002229655
+      },
+      "groups": {
+        "ALL": {
+          "samples": 17940,
+          "top1": 0.8923076923076924,
+          "top3": 0.9817725752508362,
+          "top5": 0.9893534002229655
+        },
+        "LoS": {
+          "samples": 17089,
+          "top1": 0.9044999707414126,
+          "top3": 0.9912809409561706,
+          "top5": 0.9966060038621335
+        },
+        "NLoS": {
+          "samples": 851,
+          "top1": 0.6474735605170387,
+          "top3": 0.790834312573443,
+          "top5": 0.8437132784958872
+        },
+        "BLOCKED_TRAJECTORY": {
+          "samples": 1548,
+          "top1": 0.7370801033591732,
+          "top3": 0.8682170542635659,
+          "top5": 0.9050387596899225
+        }
+      },
+      "validation": {
+        "samples": 17712,
+        "top1": 0.9092140921409214,
+        "top3": 0.9884823848238482,
+        "top5": 0.9942976513098465
+      },
+      "parameters": 154894,
+      "latency": {
+        "mean_ms": 0.6246926666666667,
+        "p50_ms": 0.5762,
+        "p95_ms": 0.9641250000000001,
+        "samples": 300
+      },
+      "name": "PG-MinGRU"
+    }
+  ],
+  "limitations": [
+    "Aggregate metrics are from the original experiments, not from the bundled synthetic samples.",
+    "Bundled model outputs on synthetic samples demonstrate API functionality only.",
+    "The fixed test sets were reported before and are not new blind tests."
+  ]
+}

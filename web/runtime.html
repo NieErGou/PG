@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>PG-MinGRU · 模型运行</title>
+  <link rel="stylesheet" href="runtime.css">
+</head>
+<body>
+<main id="runtime">
+  <header><strong>PG-MinGRU</strong><span>本地冻结模型运行</span></header>
+  <section class="controls">
+    <label for="dataset">数据集</label>
+    <select id="dataset" aria-label="运行数据集"></select>
+    <button id="run" disabled>载入并运行</button>
+  </section>
+  <section class="context">
+    <div class="status-line"><h1 id="title">读取数据集…</h1><span id="status" role="status">就绪</span></div>
+    <p id="contract"></p>
+    <p id="error" role="alert" hidden></p>
+  </section>
+  <section id="output" hidden>
+    <h2>下一帧预测</h2>
+    <div id="values"></div>
+    <h2 class="curve-title">历史观测与预测</h2>
+    <div class="legend"><span class="history-key">历史观测</span><span class="forecast-key">下一帧预测</span></div>
+    <div id="plots"></div>
+    <p class="evidence-note">曲线使用合成历史特征，t+1 为本次模型输出；没有目标时刻真值，不能据此评价准确率。</p>
+  </section>
+  <footer>合成历史样例 · 本机 CPU 冻结推理<br>原始数据采集与波束执行尚未接入在线闭环</footer>
+</main>
+<script src="runtime.js"></script>
+</body>
+</html>
