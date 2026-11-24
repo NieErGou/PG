@@ -1,4 +1,4 @@
-"""Standalone local dashboard for four published result snapshots and demo inputs."""
+"""Standalone local dashboard for version7 results and synthetic demo inputs."""
 import argparse
 import json
 import mimetypes
@@ -17,8 +17,8 @@ DATA = ROOT / "data"
 CATALOG = {
     "scenario23": ("DeepSense Scenario 23", "BEAM"),
     "multimodalnf": ("MultimodalNF", "BEAM"),
-    "fengdu": ("Fengdu / 丰都", "DOA"),
-    "jiangnan": ("Jiangnan / 江南", "DOA"),
+    "fengdu": ("场景 A · 丰都", "DOA"),
+    "jiangnan": ("场景 B · 江南", "DOA"),
 }
 LOCK = threading.Lock()
 torch.set_num_threads(1)
@@ -33,20 +33,23 @@ def folder_for(key):
 def summary(key):
     folder = folder_for(key)
     payload = json.loads((folder / "results.json").read_text(encoding="utf-8"))
+    demos = json.loads((folder / "inference_models.json").read_text(encoding="utf-8"))
     files = sorted(p.name for p in folder.iterdir()
-                   if p.is_file() and p.suffix.lower() in (".json", ".csv", ".png", ".svg"))
+                   if p.is_file() and (p.name in ("results.json", "comparison.csv")
+                                       or p.name.endswith("_comparison.png")
+                                       or p.name in ("beam_comparison_los.png", "beam_comparison_nlos.png")))
     return {"key": key, "title": CATALOG[key][0], "task": CATALOG[key][1],
             "directory": "data/" + key, "protocol": payload["protocol"],
-            "models": payload["models"], "files": files,
+            "models": payload["models"], "inference_models": demos, "files": files,
             "notes": payload.get("limitations", []),
-            "measurement": "汇总指标来自原项目的已报告测试；本仓库输入样例为合成数据，单次推理不能用于评价准确率。CPU 时延是原 Windows 测量，不是 Jetson 测量。"}
+            "measurement": "论文 version7 固定测试集汇总。"}
 
 
 def input_names(key, model):
-    records = summary(key)["models"]
+    records = summary(key)["inference_models"]
     record = next((r for r in records if r["model"] == model), None)
     if record is None:
-        raise ValueError("Unknown model")
+        raise ValueError("No frozen demo for this model")
     return record.get("input_names") or (["history", "physics", "anchor", "iq"]
                                          if CATALOG[key][1] == "DOA" else
                                          ["x", "physics" if model == "pg" else "geometry"])

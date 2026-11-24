@@ -1,0 +1,46 @@
+[
+  {
+    "model": "pg",
+    "name": "PG-MinGRU",
+    "input_names": [
+      "history",
+      "physics",
+      "anchor",
+      "iq"
+    ],
+    "archived": false
+  },
+  {
+    "model": "alstm",
+    "name": "A-LSTM (2D adaptation)",
+    "input_names": [
+      "history",
+      "physics",
+      "anchor",
+      "iq"
+    ],
+    "archived": true
+  },
+  {
+    "model": "lstm_rnn",
+    "name": "LSTM-RNN (2D adaptation)",
+    "input_names": [
+      "history",
+      "physics",
+      "anchor",
+      "iq"
+    ],
+    "archived": true
+  },
+  {
+    "model": "lrnet",
+    "name": "LRNet (3D adaptation)",
+    "input_names": [
+      "history",
+      "physics",
+      "anchor",
+      "iq"
+    ],
+    "archived": true
+  }
+]

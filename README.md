@@ -1,8 +1,10 @@
 # PG-MinGRU four-task dashboard demo
 
-This repository is a self-contained, local CPU demo of the PG-MinGRU front end. It shows four previously reported result snapshots: DeepSense Scenario 23 and MultimodalNF beam prediction, plus independent Fengdu and Jiangnan DOA estimation. The complete dashboard source, 18 frozen TorchScript models, aggregate tables/selected figures, and 16 deterministic **synthetic prepared-input examples per task** are included.
+This repository is a self-contained, local CPU demo of the PG-MinGRU front end. The comparison tables and charts follow manuscript version7 for DeepSense 6G Scenario 23, MultimodalNF, and the Fengdu and Jiangnan direction-regression scenes. The package includes the dashboard source, 18 frozen TorchScript demos, and 16 deterministic **synthetic prepared-input examples per task**.
 
-The synthetic examples are only for exercising the API and models. They are **not samples from the original four datasets**, have no ground-truth labels, and cannot reproduce the published metrics. The result cards are frozen aggregates from the original experiments; downloading this repository does not rerun training or evaluation. The fixed test sets were reported previously. The DOA display subset was chosen after test results were seen, while model checkpoints were selected on validation data. Reported CPU latency belongs to the original Windows run, not the downloader's computer or a Jetson.
+The beam comparison includes PG-MinGRU and seven baselines, with overall, NLoS, and LoS views for MultimodalNF. LoS scores are derived from the overall and NLoS scores and their group sizes. For direction regression, the tables compare PG-MinGRU with EKF, GPR, Temporal-EKF, UFIR, and WTFTP using joint angular MAE, RMSE, and frames within both pointing tolerances. Results are aggregates from previously reported fixed test windows.
+
+The inference selector lists the bundled demos and labels models from earlier comparisons as archived. New baselines are shown in the comparison tables; executable demos are listed separately. Synthetic inputs have no ground-truth labels and are for checking the local inference interface.
 
 ## Run locally
 
@@ -39,7 +41,7 @@ The package can be moved or cloned to any directory. It has no absolute paths to
 | Folder | Task | Included | Excluded |
 |---|---|---|---|
 | `data/scenario23/` | 64-class beam prediction | Aggregate metrics, one figure, frozen models, 16 synthetic inputs | Original DeepSense measurements and labels |
-| `data/multimodalnf/` | 64-class beam prediction, LoS/NLoS groups | Aggregate metrics, Top-K/NLoS figures, frozen models, 16 synthetic inputs | Original CSI, images, positions, labels |
+| `data/multimodalnf/` | 64-class beam prediction, LoS/NLoS groups | Aggregate metrics and charts by subset, frozen models, 16 synthetic inputs | Original CSI, images, positions, labels |
 | `data/fengdu/` | Azimuth/elevation prediction | Aggregate metrics, one comparison figure, frozen models, 16 synthetic inputs | Private recordings, test windows and labels |
 | `data/jiangnan/` | Azimuth/elevation prediction | Aggregate metrics, one comparison figure, frozen models, 16 synthetic inputs | Private recordings, test windows and labels |
 
@@ -50,7 +52,7 @@ Original dataset sources: [DeepSense 6G](https://deepsense6g.net/) and [Multimod
 ## API
 
 - `GET /api/datasets`: four task names.
-- `GET /api/summary?dataset=scenario23`: aggregate snapshot, figure list, and scope notes.
+- `GET /api/summary?dataset=scenario23`: version7 comparison rows in `models`, executable demo records in `inference_models`, figure list, and protocol notes.
 - `GET /api/sample?dataset=scenario23&model=pg`: one synthetic prepared-input example.
 - `POST /api/predict`: frozen-model CPU inference for the matching prepared-input JSON.
 - `GET /api/asset?dataset=scenario23&name=comparison.csv`: published aggregate files.

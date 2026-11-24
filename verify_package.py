@@ -31,8 +31,13 @@ def main():
             key = item["key"]
             page = get("/api/summary?dataset=" + key)
             assert page["directory"] == "data/" + key
-            assert page["models"]
-            for model in page["models"]:
+            assert page["protocol"]["source"] == "PG-MinGRU manuscript version7"
+            assert len(page["models"]) == (8 if item["task"] == "BEAM" else 6)
+            assert page["models"][0]["model"] == "pg"
+            assert "comparison.csv" in page["files"] and any(f.endswith(".png") for f in page["files"])
+            with urlopen(base + "/api/asset?dataset=" + key + "&name=comparison.csv", timeout=15) as response:
+                assert response.read().startswith(b"method,")
+            for model in page["inference_models"]:
                 sample = get("/api/sample?dataset=%s&model=%s" % (key, model["model"]))
                 request = Request(base + "/api/predict",
                                   data=json.dumps(sample).encode("utf-8"),

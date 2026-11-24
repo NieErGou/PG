@@ -26,28 +26,57 @@ function comparisonTable() {
   const beam = current.task === 'BEAM';
   const columns = beam
     ? [['top1', 'Top-1'], ['top3', 'Top-3'], ['top5', 'Top-5']]
-    : [['validation_mae', '验证 MAE (°)'], ['joint_mae_deg', '测试 MAE (°)'],
-       ['joint_rmse_deg', '测试 RMSE (°)'], ['p95_joint_error_deg', '测试 P95 (°)']];
-  const value = (record, field) => field === 'validation_mae'
-    ? record.validation?.joint_mae_deg : testMetrics(record)?.[field];
+    : [['joint_mae_deg', '联合 MAE (°)'], ['joint_rmse_deg', '联合 RMSE (°)'],
+       ['hits', '指向达标帧数']];
+  const value = (record, field) => testMetrics(record)?.[field];
   const best = columns.map(([field]) => {
     const numeric = current.models.map(record => value(record, field)).filter(Number.isFinite);
-    return numeric.length ? Math[beam ? 'max' : 'min'](...numeric) : null;
+    return numeric.length ? Math[beam || field === 'hits' ? 'max' : 'min'](...numeric) : null;
   });
   const head = '<thead><tr><th>模型</th>' + columns.map(([, label]) => `<th>${label}</th>`).join('') +
-    '<th>参数</th><th>CPU (ms)</th></tr></thead>';
+    '</tr></thead>';
   const rows = current.models.map(record => {
     const cells = columns.map(([field], index) => {
       const number = value(record, field);
-      const shown = Number.isFinite(number) ? (beam ? `${(100 * number).toFixed(2)}%` : number.toFixed(6)) : '—';
+      let shown = '—';
+      if (Number.isFinite(number)) {
+        if (beam) shown = `${(100 * number).toFixed(2)}%`;
+        else if (field === 'hits') shown = `${number}/${record.test.samples}`;
+        else shown = number.toFixed(4);
+      }
       return `<td class="${number === best[index] ? 'best' : ''}">${shown}</td>`;
     }).join('');
-    const parameters = Number.isFinite(record.parameters) ? record.parameters.toLocaleString() : '—';
-    const latency = record.latency?.mean_ms;
-    return `<tr class="${record.model === 'pg' ? 'pg' : ''}"><td>${esc(record.name || record.model)}</td>` +
-      cells + `<td>${parameters}</td><td>${Number.isFinite(latency) ? latency.toFixed(3) : '—'}</td></tr>`;
+    return `<tr class="${record.model === 'pg' ? 'pg' : ''}"><td>${esc(record.name || record.model)}</td>${cells}</tr>`;
   }).join('');
   $('comparison').innerHTML = head + `<tbody>${rows}</tbody>`;
+  const sampleCount = current.protocol.subsets?.[$('group').value] ?? current.protocol.split.test;
+  const parameters = current.models.find(record => record.model === 'pg')?.parameters;
+  $('measurement').textContent = [
+    current.measurement,
+    `${sampleCount.toLocaleString()} 个测试窗口。`,
+    Number.isFinite(parameters) ? `PG-MinGRU 回归模型仅有 ${parameters.toLocaleString()} 个可训练参数。` : '',
+    ...(current.notes || []),
+  ].join(' ');
+}
+
+function comparisonFigure() {
+  const group = $('group').value;
+  const suffix = group === 'ALL' ? '' : `_${group.toLowerCase()}`;
+  const name = current.task === 'BEAM' ? `beam_comparison${suffix}.png` : 'direction_comparison.png';
+  $('figures').innerHTML = current.files.includes(name)
+    ? `<a target="_blank" rel="noopener" href="${asset(name)}"><img alt="${esc(`${current.title} ${group} 模型对比图`)}" src="${asset(name)}"></a>`
+    : '<p>此子集未发布结果图。</p>';
+}
+
+function inferenceChoices(models) {
+  const options = records => records.map(record =>
+    `<option value="${esc(record.model)}">${esc(record.name || record.model)}</option>`).join('');
+  const active = models.filter(record => !record.archived);
+  const archived = models.filter(record => record.archived);
+  $('model').innerHTML = options(active) + (archived.length
+    ? `<optgroup label="历史模型演示">${options(archived)}</optgroup>` : '');
+  if (active.some(record => record.model === 'pg')) $('model').value = 'pg';
+  $('sample').disabled = $('predict').disabled = !models.length;
 }
 
 async function load() {
@@ -59,39 +88,26 @@ async function load() {
     if (version !== revision) return;
     current = data;
     $('title').textContent = data.title;
-    $('task').textContent = `${data.task} / CURRENT RESULTS`;
+    $('task').textContent = `${data.task} / VERSION 7`;
     $('description').textContent = data.task === 'BEAM'
       ? '8 帧历史预测下一帧，64 类波束输出。'
       : '5 帧历史预测下一帧方位角与俯仰角。丰都与江南分别训练和评价。';
     $('comparison-title').textContent = `PG 与 ${Math.max(0, data.models.length - 1)} 个 baseline 对比`;
-    const postTest = data.task === 'DOA' && data.protocol?.test_used_for_model_subset;
-    $('selection-note').hidden = !postTest;
-    const shown = data.models.map(record => record.name || record.model).join('、');
-    $('selection-note').textContent = postTest
-      ? `当前 DOA 仅展示 ${shown}。模型权重按验证集选择；模型展示集合是在查看测试结果后确定的，不是新的盲测。`
-      : '';
-    $('measurement').textContent = data.measurement;
     $('directory').textContent = data.directory;
     $('protocol').textContent = JSON.stringify({protocol: data.protocol, limitations: data.notes}, null, 2);
 
     const groups = new Set(['ALL']);
     for (const record of data.models) for (const group of Object.keys(record.groups || {})) groups.add(group);
-    $('group').innerHTML = [...groups].map(group => `<option>${esc(group)}</option>`).join('');
+    $('group').innerHTML = [...groups].map(group =>
+      `<option value="${esc(group)}">${group === 'ALL' ? '总体' : esc(group)}</option>`).join('');
     $('group').hidden = groups.size === 1;
-    $('model').innerHTML = data.models.map(record =>
-      `<option value="${esc(record.model)}">${esc(record.name || record.model)}</option>`).join('');
+    inferenceChoices(data.inference_models);
     $('input').value = '';
     $('prediction').textContent = '等待输入';
     comparisonTable();
+    comparisonFigure();
 
-    const figures = data.files.filter(name => /\.png$/i.test(name) &&
-      /comparison|predictions|cdf|topk|nlos/i.test(name));
-    $('figures').innerHTML = figures.map(name =>
-      `<a target="_blank" href="${asset(name)}"><img loading="lazy" alt="${esc(name)}" src="${asset(name)}"></a>`).join('') ||
-      '<p>此版本未发布结果图。</p>';
-    const downloads = data.files.filter(name =>
-      ['results.json', 'comparison.csv', 'predictions.csv', 'report.html', 'pg.pt',
-       'doa_paper_comparison.xlsx'].includes(name) || /nlos.*\.csv$/i.test(name));
+    const downloads = data.files.filter(name => ['results.json', 'comparison.csv'].includes(name));
     $('downloads').innerHTML = downloads.map(name =>
       `<a href="${asset(name)}" download>${esc(name)}</a>`).join('');
   } catch (err) {
@@ -113,7 +129,7 @@ document.querySelectorAll('[data-task]').forEach(button => button.onclick = () =
 });
 $('dataset').onchange = load;
 $('refresh').onclick = load;
-$('group').onchange = comparisonTable;
+$('group').onchange = () => { comparisonTable(); comparisonFigure(); };
 $('sample').onclick = async () => {
   try {
     showError(null);

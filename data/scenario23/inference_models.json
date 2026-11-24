@@ -1,0 +1,32 @@
+[
+  {
+    "model": "high_precision_multimodal",
+    "name": "ConvNeXt-A+ECA",
+    "input_names": null,
+    "archived": false
+  },
+  {
+    "model": "system_multimodal",
+    "name": "System multimodal",
+    "input_names": null,
+    "archived": true
+  },
+  {
+    "model": "freshness_student",
+    "name": "Freshness student",
+    "input_names": null,
+    "archived": true
+  },
+  {
+    "model": "position_geometry_mlp",
+    "name": "Position / geometry MLP",
+    "input_names": null,
+    "archived": true
+  },
+  {
+    "model": "pg",
+    "name": "PG-MinGRU",
+    "input_names": null,
+    "archived": false
+  }
+]
