@@ -6,6 +6,11 @@ The beam comparison includes PG-MinGRU and seven baselines, with overall, NLoS, 
 
 The inference selector lists the bundled demos and labels models from earlier comparisons as archived. New baselines are shown in the comparison tables; executable demos are listed separately. Synthetic inputs have no ground-truth labels and are for checking the local inference interface.
 
+## Versions
+
+- [Current dashboard (`main`)](https://github.com/NieErGou/PG/tree/main) shows the version7 manuscript's baseline comparisons.
+- [Legacy dashboard (`dashboard-legacy`)](https://github.com/NieErGou/PG/tree/dashboard-legacy) preserves the original standalone demo and its earlier comparison tables, charts, and model selection. Use this snapshot to reproduce the earlier dashboard display.
+
 ## Run locally
 
 Use Python 3.10 or newer. CPU is sufficient. From this directory:

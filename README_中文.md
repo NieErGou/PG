@@ -2,6 +2,11 @@
 
 本仓库提供可独立运行的 PG-MinGRU 前端，包含论文 version7 的四组对比结果、18 个 CPU 冻结演示模型，以及每个任务 16 条**确定性合成输入**。
 
+## 版本说明
+
+- [当前版（`main`）](https://github.com/NieErGou/PG/tree/main) 展示论文 version7 的基线对比结果。
+- [旧版归档（`dashboard-legacy`）](https://github.com/NieErGou/PG/tree/dashboard-legacy) 保留初版独立前端及当时的对比表、图和模型选择，可用于复现旧版页面。
+
 ## 启动
 
 需要 Python 3.10 或更新版本。在本目录的 PowerShell 中执行：
